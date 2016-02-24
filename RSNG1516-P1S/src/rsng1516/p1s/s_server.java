@@ -1,12 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package rsng1516.p1s;
 
 /**
  *
+ * @author Christpher Castro
  * @author Iñigo Ezcurdia
  */
 public class s_server {
