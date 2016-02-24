@@ -7,7 +7,7 @@ package rsng1516.p1s;
 
 /**
  *
- * @author user
+ * @author Iñigo Ezcurdia
  */
 public class s_server {
 
