@@ -87,13 +87,12 @@ Si ha iniciado correctamente el envio del stream
 Una vez iniciado un stream el cliente y servidor mantendrán la conexión TCP abierta. El cierre de la conexión por el cliente se considera que implica la petición al servidor de que pare el stream asociado
 
 #### Direcciones y puertos
-
-ParametroValor definicion
+```
 
  `MDIR ff05::1234:5678`
 
  MPORT 12345
-
+```
 El anterior protocolo se utilizará para la comunicación entre programas de diferentes grupos por lo que no puede cambiarse unilateralmente por ningún grupo
 
 ### Especificación del servidor
