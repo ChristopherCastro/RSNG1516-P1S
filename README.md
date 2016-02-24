@@ -89,7 +89,7 @@ Una vez iniciado un stream el cliente y servidor mantendrán la conexión TCP ab
 #### Direcciones y puertos
 ```
 
- `MDIR ff05::1234:5678`
+ MDIR ff05::1234:5678
 
  MPORT 12345
 ```
