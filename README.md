@@ -34,26 +34,31 @@ Los números de linea son solo orientativos no se envían. Estos serían ejemplo
 Ejemplo 1
 
 En el paquete 1:
+
+
+```
 SSER 12345
 PRG 1 Clase del martes
 PRG 2 Camara de la sala 1
 PRG 6 Camara de la sala de juntas
 END
-
+```
 Ejemplo 2
-
 En el paquete 1:
+```
 SSER 5000 2001:720:1d10:fff7::123:aa1
 PRG 1 Canal de video 1
 PRG 2 Directo1
 PRG 3 Directo sala 2
 MORE
-
+```
 En el paquete 2
+```
 SSER 5000 2001:720:1d10:fff7::123:aa1
 PRG 4 Camara de atras
 PRG 6 Camara de la sala 8    
 END
+```
 
 #### Petición de un programa
 
@@ -68,14 +73,16 @@ El cliente puede realizar las siguientes operaciones
 - Para pedir un envío de un video el cliente en primer lugar preparara el script de recepción en un puerto indicado y a continuación pedirá el canal al servidor enviando la linea de texto REQ id puertocliente [direccioncliente] 
 
 donde id es el identificador del canal visto en los anuncios y puertocliente el puerto en el que esta escuchando. Si especifica la direccion IP el servidor utilizara esa dirección o en caso contrario utilizara el origen de esta conexión. El servidor contestara a esta petición con una de estas lineas
-
+```
 REQ FAIL mensaje
 Si no va a servir la peticion indicando el mensaje de error 
 que quiere mostrar (Tipo: Canal inexistente, No he podido lanzar
 el streamer o lo que sea)
-
+```
+```
 REQ OK
 Si ha iniciado correctamente el envio del stream
+```
 
 Una vez iniciado un stream el cliente y servidor mantendrán la conexión TCP abierta. El cierre de la conexión por el cliente se considera que implica la petición al servidor de que pare el stream asociado
 
@@ -102,18 +109,18 @@ el servidor envia los anuncios a la direccion especificada en -m
 y al puerto especificado en -o
 
 El fichero de configuración tendra una linea por cada programa a servir y anunciar. Se sugiere el siguiente formato
-
+```
 1: id scriptenvio titulo
 2: id scriptenvio titulo
 ...
 N: id scriptenvio titulo
-
+```
 Por ejemplo este sería un ejemplo válido
-
+```
 1 /home/mikel/sserver/envia_canal1.bash Video de la clase X
 5 /home/mikel/sserver/envia_canal2.bash Camara del laboratorio
 6 /home/mikel/sserver/envia_escritorio.bash Streaming del escritorio
-
+```
 ### Especificación del cliente
 
 El programa cliente debe cumplir las siguientes especificaciones
