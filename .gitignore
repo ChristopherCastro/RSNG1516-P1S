@@ -5,3 +5,5 @@ dist/
 nbdist/
 nbactions.xml
 .nb-gradle/
+
+RSNG1516-P1S/nbproject/private/private.properties
