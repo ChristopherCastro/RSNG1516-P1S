@@ -10,7 +10,7 @@ import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
 /**
- *
+ * Clase primigénea. Se encarga de validar los argumentos y lanzar 2 hilos. Uno para atender peticiones de los clientes y otro para enviar anuncios multicast.
  * @author Carolina Barcelo
  * @author Christpher Castro
  * @author Iñigo Ezcurdia
@@ -30,6 +30,12 @@ public class s_server {
         OptionParser parser = new OptionParser( "f:p:m:o:" );
         OptionSet options = parser.parse( args );
         checkArgs(options);
+        
+        MultiCaster multicaster = new MultiCaster((String) options.valueOf("f"), (String) options.valueOf("m"), Integer.parseInt((String) options.valueOf("o")));
+        new Thread(multicaster).start();
+        
+        ClientDesk desk = new ClientDesk();
+        new Thread(desk).start();
     }
     
     //Comprueba que se tienen todos los argumentos necesarios y con el formato adecuado.
