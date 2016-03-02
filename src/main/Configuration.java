@@ -17,7 +17,7 @@ public class Configuration {
         this.mcastAddress = mcastAddress;
         this.serverPort = serverPort;
         this.mcastPort = mcastPort;
-        System.out.println("[Configuration] Fichero ");
+        System.out.println("[Configuration] Configuración del server completada con éxito");
     }
 
     //Recuperar puerto
@@ -30,6 +30,7 @@ public class Configuration {
         return this.mcastAddress;
     }
     
+    //Recupera el puerto al que realizar los anuncios multicast
     public int getMcastPort(){
         return this.mcastPort;
     }
