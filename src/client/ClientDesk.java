@@ -24,7 +24,7 @@ public class ClientDesk implements Runnable {
         try {
             ServerSocket serverSocket = new ServerSocket(config.getServerPort());
             while (true) {
-                new ClientHandler(serverSocket.accept(), this.config.getChannels());
+                new ClientHandler(serverSocket.accept(), this.config.getChannelCollection());
             }
         } catch (IOException ex) {
             Logger.getLogger(ClientDesk.class.getName()).log(Level.SEVERE, null, ex);
