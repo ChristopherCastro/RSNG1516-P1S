@@ -1,8 +1,6 @@
 package cast;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 
@@ -20,7 +18,7 @@ class MultiCaster implements Runnable{
         this.config = config;
         this.s = new MulticastSocket(this.config.getMcastPort());
         this.s.joinGroup(this.config.getMdir());
-        System.out.println("[INFO]Iniciando servicio de anunciado multicast a " + this.config.getMdir() + ":" + this.s.getLocalPort()+ "...");
+        System.out.println("[MULTICASTER]Iniciando servicio de anunciado multicast a " + this.config.getMdir() + ":" + this.s.getLocalPort()+ "...");
     }
 
     @Override
