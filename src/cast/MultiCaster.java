@@ -1,32 +1,27 @@
 package cast;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import main.Configuration;
 
 /**
- * Encargado de realizar los anuncios multicast de los programas indicados en el fichero de configuracion
+ * Encargado de realizar los anuncios multicast de los programas indicados en
+ * el fichero de configuracion
  */
-
-    
-public class MultiCaster implements Runnable{
-    File config; //Fichero que contiene el listado de de programas.
+public class MultiCaster implements Runnable {
     MulticastSocket s; //Socket encargado de enviar los anuncios multicast
-    
-    
-    public MultiCaster(String config, String mdir, int mpuerto) throws UnknownHostException, IOException {
-        this.config = new File(config);
-        this.s = new MulticastSocket(mpuerto);
-        this.s.joinGroup(InetAddress.getByName(mdir));
-        System.out.println("[INFO]Iniciando servicio de anunciado multicast a " + mdir + ":" + this.s.getLocalPort()+ "...");
+    Configuration config;
+
+    MultiCaster(Configuration config) throws UnknownHostException, IOException {
+        this.config = config;
+        this.s = new MulticastSocket(this.config.getMcastPort());
+        this.s.joinGroup(this.config.getMcastDir());
+        System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast a %s:%s ...", this.config.getMcastDir(), this.s.getLocalPort());
     }
 
     @Override
     public void run() {
-        
         throw new UnsupportedOperationException("Not supported yet.");
     }
-    
 }
