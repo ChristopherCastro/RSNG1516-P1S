@@ -16,7 +16,7 @@ public class ClientDesk implements Runnable {
 
     public ClientDesk(Configuration config) {
         this.config = config;
-        System.out.printf("[INFO] Iniciando servicio desk de clientes en el puerto %d ...", this.config.getServerPort());
+        System.out.printf("[INFO] Iniciando servicio desk de clientes en el puerto %d ...\n", this.config.getServerPort());
     }
 
     @Override

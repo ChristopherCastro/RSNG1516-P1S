@@ -10,6 +10,8 @@ import cast.MultiCaster;
 import client.ClientDesk;
 import java.io.File;
 import java.net.InetAddress;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -40,7 +42,6 @@ public class s_server {
                 InetAddress.getByName((String) options.valueOf("m")),
                 Integer.parseInt((String) options.valueOf("p")),
                 Integer.parseInt((String) options.valueOf("o")));
-        
         
         MultiCaster multicaster = new MultiCaster(s_server.config);
         new Thread(multicaster).start();
@@ -73,7 +74,7 @@ public class s_server {
         if ((Integer.parseInt((String) options.valueOf("p"))<0 || Integer.parseInt((String) options.valueOf("p"))>65535)){
             throw new Exception("El puerto " + options.valueOf("p") + " no es un puerto de escucha válido."); 
         }else{
-            System.out.println("╟Puerto de escucha: " + options.valueOf("p"));
+            System.out.println("╟Puerto de escucha del servidor: " + options.valueOf("p"));
         }
         
         //Comprobación de que se ha dado una dirección de multicast válida

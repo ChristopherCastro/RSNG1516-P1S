@@ -1,0 +1,9 @@
+1 script1 Canal_de_video 1
+2 script2 Los_2_samurais
+3 script3 Los_3_mosqueteros
+4 script4 4_bodas_para_3_hermanos
+7 script7 Casino_777
+8 script8 Los_odiosos_8
+11 script11 Las_11_cabras_del_averno
+12 script12 Doce_monos
+13 script13 Trece_rosas
