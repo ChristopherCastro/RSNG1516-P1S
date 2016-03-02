@@ -29,14 +29,18 @@ public class s_server {
      * mpuerto: puerto al que el servidor enviará los anuncios
      * @param args the command line arguments
      */
-    Configuration config;
+    protected static Configuration config;
     
     public static void main(String[] args) throws Exception {
         // Parseo de argumentos
         OptionParser parser = new OptionParser("f:p:m:o:");
         OptionSet options = parser.parse( args );
         checkArgs(options);
-        this.config = new Configuration((String) options.valueOf("f") , "mcastAddress", Integer.parseInt((String) options.valueOf("p")), Integer.parseInt((String) options.valueOf("o")));
+        s_server.config = new Configuration((String) options.valueOf("f") ,
+                InetAddress.getByName((String) options.valueOf("m")),
+                Integer.parseInt((String) options.valueOf("p")),
+                Integer.parseInt((String) options.valueOf("o")));
+        
         
         MultiCaster multicaster = new MultiCaster((String) options.valueOf("f"), (String) options.valueOf("m"), Integer.parseInt((String) options.valueOf("o")));
         new Thread(multicaster).start();
