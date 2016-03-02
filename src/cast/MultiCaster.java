@@ -13,7 +13,7 @@ public class MultiCaster implements Runnable {
     MulticastSocket s; //Socket encargado de enviar los anuncios multicast
     Configuration config;
 
-    MultiCaster(Configuration config) throws UnknownHostException, IOException {
+    public MultiCaster(Configuration config) throws UnknownHostException, IOException {
         this.config = config;
         this.s = new MulticastSocket(this.config.getMcastPort());
         this.s.joinGroup(this.config.getMcastDir());

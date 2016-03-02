@@ -42,7 +42,7 @@ public class s_server {
                 Integer.parseInt((String) options.valueOf("o")));
         
         
-        MultiCaster multicaster = new MultiCaster((String) options.valueOf("f"), (String) options.valueOf("m"), Integer.parseInt((String) options.valueOf("o")));
+        MultiCaster multicaster = new MultiCaster(s_server.config);
         new Thread(multicaster).start();
         
         ClientDesk desk = new ClientDesk((String) options.valueOf("f"), Integer.parseInt((String) options.valueOf("p")));
