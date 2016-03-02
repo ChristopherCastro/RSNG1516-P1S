@@ -1,11 +1,12 @@
 package client;
 
 import java.io.File;
+import java.net.Socket;
 
 public class ClientHandler implements Runnable{
   
     
-    public ClientHandler() {        
+    public ClientHandler(Socket s) {        
     }
     
     @Override
