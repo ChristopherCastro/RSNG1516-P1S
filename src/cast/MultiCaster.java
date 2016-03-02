@@ -11,12 +11,12 @@ import java.net.UnknownHostException;
  */
 
     
-class MultiCaster implements Runnable{
+public class MultiCaster implements Runnable{
     File config; //Fichero que contiene el listado de de programas.
     MulticastSocket s; //Socket encargado de enviar los anuncios multicast
     
     
-    MultiCaster(String config, String mdir, int mpuerto) throws UnknownHostException, IOException {
+    public MultiCaster(String config, String mdir, int mpuerto) throws UnknownHostException, IOException {
         this.config = new File(config);
         this.s = new MulticastSocket(mpuerto);
         this.s.joinGroup(InetAddress.getByName(mdir));
