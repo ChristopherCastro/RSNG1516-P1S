@@ -5,7 +5,7 @@ import java.io.File;
 public class ClientHandler implements Runnable{
   
     
-    public ClientHandler(String config, int puerto) {        
+    public ClientHandler() {        
     }
     
     @Override
