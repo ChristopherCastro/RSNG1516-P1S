@@ -8,6 +8,7 @@ import channel.*;
  * Esta clase embebe toda la configuración del servidor 
  */
 public class Configuration {
+    int announceInterval; //Intervalo de tiempo en ms entre anuncios
     ChannelCollection channels; //Colección de canales
     int serverPort; // Puerto en el que escucha el servidor
     InetAddress mcastAddress; //Dirección a la que realizar los anuncios multicast
