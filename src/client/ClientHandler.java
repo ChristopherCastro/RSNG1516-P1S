@@ -7,7 +7,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import main.Configuration;
 
 public class ClientHandler implements Runnable {
 
