@@ -9,6 +9,11 @@ import channel.*;
  */
 public class Configuration {
     int announceInterval; //Intervalo de tiempo en ms entre anuncios
+    int UDPMaxNumChannels = 5; //Numero de canales a enviar en cada paquete UDP de anunciado multicast
+
+    public int getUDPMaxNumChannels() {
+        return UDPMaxNumChannels;
+    }
     ChannelCollection channels; //Colección de canales
     int serverPort; // Puerto en el que escucha el servidor
     InetAddress mcastAddress; //Dirección a la que realizar los anuncios multicast
@@ -37,7 +42,10 @@ public class Configuration {
         return this.mcastPort;
     }
     
+    //Recupera el numero máximo de canales a incluir en cada paquete UDP
     public ChannelCollection getChannelCollection(){
         return this.channels;
     }
+    
+    
 }

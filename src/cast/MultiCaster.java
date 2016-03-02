@@ -24,8 +24,22 @@ public class MultiCaster implements Runnable {
 
     @Override
     public void run() {
+        int num_canal_paquete = 1;
         for (Channel canal : this.config.getChannelCollection().getCollection()) {
+            if ((num_canal_paquete % this.config.getUDPMaxNumChannels()) == 1){ //Si es el inicio de un paquete
+                //Escribo SSER puertoservidor [ipservidor]
+                //Escribo canal 
+            }else if ((num_canal_paquete % this.config.getUDPMaxNumChannels()) == 0){ //Si es el final de un paquete
+                //Escribo canal
+                //Si era el ultimo de todos los canales, acabo con un END
+                //Si todavía quedan canales, acabo con un MORE
             
+            }else{ //Si es un canal intermedio
+                //Escribo canal
+                //Si soy el último escribo END
+            }
+            
+            num_canal_paquete++;//Aumento el contador de canales tratados
         } //Recorro hiteando con cada objeto
     }
 }
