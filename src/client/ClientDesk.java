@@ -1,24 +1,33 @@
 package client;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import main.Configuration;
 
 /**
  * Se encarga de escuchar en un puerto determinado a la espera de peticiones por parte de los clientes.
  * Por cada petición creará un hilo para atenderla.
  */
-public class ClientDesk implements Runnable{
-    File config; //Fichero que contiene el listado de de programas.
-    int port; //Puerto de escucha para atender clientes
-    
-    public ClientDesk(String config, int puerto) {
-        this.config = new File(config);
-        this.port = puerto;
-        System.out.println("[INFO]Iniciando servicio desk de clientes en el puerto " + this.port + "...");
+public class ClientDesk implements Runnable {
+
+    protected Configuration config;
+
+    public ClientDesk(Configuration config) {
+        this.config = config;
+        System.out.printf("[INFO] Iniciando servicio desk de clientes en el puerto %d ...", this.config.getServerPort());
     }
-    
+
     @Override
     public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        try {
+            ServerSocket serverSocket = new ServerSocket(config.getServerPort());
+            while (true) {
+                new ClientHandler(serverSocket.accept());
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(ClientDesk.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
 }
