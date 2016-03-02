@@ -41,6 +41,9 @@ public class Channel {
         this.title = title;
     }
     
+    public String getChannelAnnounce(){
+        return "PRG " + this.channelId + " " + this.title;
+    }
     
     
 }

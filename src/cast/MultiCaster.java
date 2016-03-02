@@ -38,7 +38,6 @@ public class MultiCaster implements Runnable {
                 //Escribo canal
                 //Si soy el último escribo END
             }
-            
             num_canal_paquete++;//Aumento el contador de canales tratados
         } //Recorro hiteando con cada objeto
     }
