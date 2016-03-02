@@ -1,11 +1,10 @@
-package main;
-
+package tools;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class Utilities {
+public class IpTools {
 
     private static Pattern VALID_IPV4_PATTERN = null;
     private static Pattern VALID_IPV6_PATTERN = null;
@@ -33,12 +32,11 @@ public class Utilities {
      */
     public static boolean isIpAddress(String ipAddress) {
 
-        Matcher m1 = Utilities.VALID_IPV4_PATTERN.matcher(ipAddress);
+        Matcher m1 = IpTools.VALID_IPV4_PATTERN.matcher(ipAddress);
         if (m1.matches()) {
             return true;
         }
-        Matcher m2 = Utilities.VALID_IPV6_PATTERN.matcher(ipAddress);
+        Matcher m2 = IpTools.VALID_IPV6_PATTERN.matcher(ipAddress);
         return m2.matches();
     }
-
 }

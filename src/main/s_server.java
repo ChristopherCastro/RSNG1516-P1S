@@ -5,6 +5,7 @@
 package main;
 
 
+import tools.IpTools;
 import cast.MultiCaster;
 import client.ClientDesk;
 import java.io.File;
@@ -29,7 +30,7 @@ public class s_server {
      */
     public static void main(String[] args) throws Exception {
         // Parseo de argumentos
-        OptionParser parser = new OptionParser( "f:p:m:o:" );
+        OptionParser parser = new OptionParser("f:p:m:o:");
         OptionSet options = parser.parse( args );
         checkArgs(options);
         
@@ -68,7 +69,7 @@ public class s_server {
         }
         
         //Comprobación de que se ha dado una dirección de multicast válida
-        if (Utilities.isIpAddress((String) options.valueOf("m"))){
+        if (IpTools.isIpAddress((String) options.valueOf("m"))){
             System.out.println("╟Dirección de anunciado multicast: " + options.valueOf("m"));
         }else{
             throw new Exception("La dirección para multicast <<" + options.valueOf("m") + ">> no es una dirección válida. Debe tener formato ipv4 o ipv6"); 
