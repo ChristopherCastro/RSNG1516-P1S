@@ -1,4 +1,4 @@
-package rsng1516.p1s;
+package cast;
 
 import java.io.File;
 import java.io.IOException;

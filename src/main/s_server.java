@@ -2,9 +2,11 @@
  * Se pretende construir un sistema de anuncio de videos bajo demanda o canales de streaming para una red IPv6.
  * Repositorio: https://github.com/ChristopherCastro/RSNG1516-P1S
  */
-package rsng1516.p1s;
+package main;
 
 
+import cast.MultiCaster;
+import client.ClientDesk;
 import java.io.File;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;

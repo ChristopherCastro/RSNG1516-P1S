@@ -1,4 +1,4 @@
-package rsng1516.p1s;
+package main;
 
 
 import java.util.regex.Matcher;

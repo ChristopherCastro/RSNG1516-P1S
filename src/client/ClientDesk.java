@@ -1,4 +1,4 @@
-package rsng1516.p1s;
+package client;
 
 import java.io.File;
 
