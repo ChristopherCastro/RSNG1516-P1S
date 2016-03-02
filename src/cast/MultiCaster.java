@@ -1,8 +1,10 @@
 package cast;
 
+import channel.Channel;
 import java.io.IOException;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
+import java.util.Iterator;
 import main.Configuration;
 
 /**
@@ -22,6 +24,8 @@ public class MultiCaster implements Runnable {
 
     @Override
     public void run() {
-        
+        for (Channel canal : this.config.getChannelCollection().getCollection()) {
+            
+        } //Recorro hiteando con cada objeto
     }
 }

@@ -45,7 +45,7 @@ public class s_server {
         MultiCaster multicaster = new MultiCaster(s_server.config);
         new Thread(multicaster).start();
         
-        ClientDesk desk = new ClientDesk((String) options.valueOf("f"), Integer.parseInt((String) options.valueOf("p")));
+        ClientDesk desk = new ClientDesk(s_server.config);
         new Thread(desk).start();
     }
     

@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,12 +19,12 @@ import java.util.logging.Logger;
  *
  * @author Carol
  */
-public class ChannelCollection {
+public class ChannelCollection{
 
     protected ArrayList<Channel> collection;
     protected String pathFile;
 
-    public ChannelCollection(String pathFile) {
+    public ChannelCollection(String pathFile){
         this.collection = new ArrayList();        
 
         try {
@@ -48,5 +49,9 @@ public class ChannelCollection {
 
     public ArrayList<Channel> getCollection() {
         return collection;
+    }
+    
+    public int getNumCanales(){
+        return this.collection.size();
     }
 }

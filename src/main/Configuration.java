@@ -36,4 +36,8 @@ public class Configuration {
     public int getMcastPort(){
         return this.mcastPort;
     }
+    
+    public ChannelCollection getChannelCollection(){
+        return this.channels;
+    }
 }
