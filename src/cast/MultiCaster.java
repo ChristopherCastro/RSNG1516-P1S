@@ -12,15 +12,15 @@ import java.net.UnknownHostException;
 
     
 class MultiCaster implements Runnable{
-    File config; //Fichero que contiene el listado de de programas.
     MulticastSocket s; //Socket encargado de enviar los anuncios multicast
+    Configuration config;
     
     
-    MultiCaster(String config, String mdir, int mpuerto) throws UnknownHostException, IOException {
-        this.config = new File(config);
-        this.s = new MulticastSocket(mpuerto);
-        this.s.joinGroup(InetAddress.getByName(mdir));
-        System.out.println("[INFO]Iniciando servicio de anunciado multicast a " + mdir + ":" + this.s.getLocalPort()+ "...");
+    MultiCaster(Configuration config) throws UnknownHostException, IOException {
+        this.config = config;
+        this.s = new MulticastSocket(this.config.getMcastPort());
+        this.s.joinGroup(this.config.getMdir());
+        System.out.println("[INFO]Iniciando servicio de anunciado multicast a " + this.config.getMdir() + ":" + this.s.getLocalPort()+ "...");
     }
 
     @Override
