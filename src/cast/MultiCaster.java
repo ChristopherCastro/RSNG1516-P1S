@@ -2,9 +2,9 @@ package cast;
 
 import channel.Channel;
 import java.io.IOException;
+import java.net.DatagramPacket;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.Configuration;
@@ -20,8 +20,7 @@ public class MultiCaster implements Runnable {
     public MultiCaster(Configuration config) throws UnknownHostException, IOException {
         this.config = config;
         this.s = new MulticastSocket(this.config.getMcastPort());
-        this.s.joinGroup(this.config.getMcastDir());
-        System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast a %s:%s ...\n", this.config.getMcastDir(), this.s.getLocalPort());
+        System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast a %s:%s ...\n", this.config.getMcastDir(), this.config.getMcastPort());
     }
 
     @Override
@@ -38,7 +37,7 @@ public class MultiCaster implements Runnable {
     }
 
     private void anunciar(){
-        System.out.println("[MULTICASTER] Hora de anunciar!");
+        System.out.println("[MULTICASTER] ¡Anunciando!");
         String paquete="";
         int num_canal_paquete = 1;
         for (Channel canal : this.config.getChannelCollection().getCollection()) {
@@ -82,5 +81,12 @@ public class MultiCaster implements Runnable {
     //Enviar por el socket multicast s el string paquete
     private void sendDatagram(MulticastSocket s, String paquete) {
         System.out.println("[MULTICASTER] Enviado el siguiente paquete: \n" + paquete);
+        byte[] datagrama_contenido = paquete.getBytes();
+        DatagramPacket datagrama = new DatagramPacket(datagrama_contenido,datagrama_contenido.length, this.config.getMcastDir(), this.config.getMcastPort());
+        try {
+            s.send(datagrama);
+        } catch (IOException ex) {
+            Logger.getLogger(MultiCaster.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
