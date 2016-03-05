@@ -1,5 +1,6 @@
 package client;
 
+import channel.Channel;
 import channel.ChannelCollection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,13 +13,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
-
+    
+    protected Socket s;
     protected BufferedReader in = null;
     protected PrintWriter out = null;
     protected ChannelCollection channels;
 
     public ClientHandler(Socket s, ChannelCollection channels) {
         try {
+            this.s = s;
             this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             this.out = new PrintWriter(s.getOutputStream(), true);
             this.channels = channels;
@@ -34,8 +37,19 @@ public class ClientHandler implements Runnable {
         try {
             String line = this.in.readLine();
             RequestMessage request = new RequestMessage(line);
-            if ("REQ".equals(request.req)){
-                throw new IllegalArgumentException("El mensaje no contiene una peticion valida. No es una peticion REQ \n");
+            if (!request.req.equals("REQ")){
+                throw new IllegalArgumentException("El mensaje contiene una peticion invalida. No es una peticion REQ \n");
+                // send: "REQ FAIL mensaje. No se va a servir la peticion: Peticion invalida. No es una peticion REQ"
+            }
+            if(request.clientAdress==null || request.clientAdress==""){
+                //añadir direccion cliente si no la tiene
+                request.clientAdress = s.getInetAddress().toString();                
+            }
+            if(channels.isEmpty()){
+                throw new IllegalArgumentException("La lista de canales no existe o esta vacia. \n");
+                // send: "REQ FAIL mensaje. La lista de canales no existe o esta vacia"
+            }else{
+                Channel video = this.channels.getById(request.id);
             }
             
             

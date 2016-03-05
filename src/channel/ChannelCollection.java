@@ -54,4 +54,8 @@ public class ChannelCollection{
     public int getNumCanales(){
         return this.collection.size();
     }
+    
+    public boolean isEmpty (){
+        return this.collection.isEmpty();
+    }
 }
