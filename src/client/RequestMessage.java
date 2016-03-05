@@ -11,13 +11,9 @@ public class RequestMessage {
 
     public RequestMessage(String command) {
         String[] parameter = command.split("(' ')|(\t)");
-        this.req = req;
-        this.id = id;
-        this.port = port;
-        this.clientAdress = clientAdress;
+        this.req = parameter[0];
+        this.id = parameter[1];
+        this.port = parameter[2];
+        this.clientAdress =  parameter[3];
     }
-    
-    
-    
-    
 }
