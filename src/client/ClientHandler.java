@@ -53,12 +53,23 @@ public class ClientHandler implements Runnable {
                 Process bash = Runtime.getRuntime().exec(video.getScript());
                 // EL CONTROL DEL HILO DEL SOCKET (MUERTE POR CIERRE DEL CLIENTE)
                 // DE ESTE HANDLER LO TENDRIA QUE HACER EL clientDesk
+                while (bash.isAlive()) {
+                }
 
+                if (bash.exitValue() != 0) {
+                    //el streaming se ha interrumpido
+                    //enviar mensaje
+                }
+                bash.destroy();
+                this.s.close();
+                try {
+                    this.finalize();
+                } catch (Throwable ex) {
+                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-
         } catch (IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
