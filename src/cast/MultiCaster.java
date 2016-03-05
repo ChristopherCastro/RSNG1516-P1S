@@ -45,19 +45,19 @@ public class MultiCaster implements Runnable {
                 //Escribo SSER puertoservidor [ipservidor]
                 paquete="SSER "+this.config.getServerPort() +"\n"; //TODO: Añadir IP del servidor opcionalmente
                 //Escribo canal 
-                paquete += canal.getChannelAnnounce()+"\n";
+                paquete += canal.getChannelAnnouncement()+"\n";
                 
                 //Si también es el ultimo canal ( primer y ultimo del paquete, ultimo del listado)
-                if (num_canal_paquete == this.config.getChannelCollection().getNumCanales()){
+                if (num_canal_paquete == this.config.getChannelCollection().size()){
                     paquete += "END";
                     sendDatagram(this.s, paquete);
                 }
                 
             }else if ((num_canal_paquete % this.config.getUDPMaxNumChannels()) == 0){ //Si es el final de un paquete
                 //Escribo canal
-                paquete += canal.getChannelAnnounce()+"\n";
+                paquete += canal.getChannelAnnouncement()+"\n";
                 //Si era el ultimo de todos los canales, acabo con un END
-                if (num_canal_paquete == this.config.getChannelCollection().getNumCanales()){
+                if (num_canal_paquete == this.config.getChannelCollection().size()){
                     paquete += "END";
                     sendDatagram(this.s, paquete);
                 }else{//Si todavía quedan canales, acabo con un MORE
@@ -67,9 +67,9 @@ public class MultiCaster implements Runnable {
             
             }else{ //Si es un canal intermedio
                 //Escribo canal
-                paquete += canal.getChannelAnnounce()+"\n";
+                paquete += canal.getChannelAnnouncement()+"\n";
                 //Si soy el último escribo END
-                if (num_canal_paquete == this.config.getChannelCollection().getNumCanales()){
+                if (num_canal_paquete == this.config.getChannelCollection().size()){
                     paquete += "END";
                     sendDatagram(this.s, paquete);
                 }

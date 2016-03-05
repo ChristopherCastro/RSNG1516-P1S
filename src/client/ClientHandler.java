@@ -2,11 +2,12 @@ package client;
 
 import channel.Channel;
 import channel.ChannelCollection;
+import error.ChannelNotFoundException;
+import error.InvalidRequestException;
+import error.RequestBaseException;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -14,14 +15,14 @@ import java.util.logging.Logger;
 
 public class ClientHandler implements Runnable {
 
-    protected Socket s;
+    protected Socket socket;
     protected BufferedReader in = null;
     protected PrintWriter out = null;
     protected ChannelCollection channels;
 
     public ClientHandler(Socket s, ChannelCollection channels) {
         try {
-            this.s = s;
+            this.socket = s;
             this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
             this.out = new PrintWriter(s.getOutputStream(), true);
             this.channels = channels;
@@ -36,40 +37,39 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             String line = this.in.readLine();
-            RequestMessage request = new RequestMessage(line);
-            if (!request.req.equals("REQ")) {
-                throw new IllegalArgumentException("El mensaje contiene una peticion invalida. No es una peticion REQ \n");
-                // send: "REQ FAIL mensaje. No se va a servir la peticion: Peticion invalida. No es una peticion REQ"
-            }
-            if (request.clientAdress == null || request.clientAdress == "") {
-                //añadir direccion cliente si no la tiene
-                request.clientAdress = s.getInetAddress().toString();
-            }
-            if (channels.isEmpty()) {
-                throw new IllegalArgumentException("La lista de canales no existe o esta vacia. \n");
-                // send: "REQ FAIL mensaje. La lista de canales no existe o esta vacia"
-            } else {
-                Channel video = this.channels.getById(request.id);
-                Process bash = Runtime.getRuntime().exec(video.getScript());
-                // EL CONTROL DEL HILO DEL SOCKET (MUERTE POR CIERRE DEL CLIENTE)
-                // DE ESTE HANDLER LO TENDRIA QUE HACER EL clientDesk
-                while (bash.isAlive()) {
-                }
+            RequestMessage request = new RequestMessage(this.socket, line);
 
-                if (bash.exitValue() != 0) {
-                    //el streaming se ha interrumpido
-                    //enviar mensaje
-                }
-                bash.destroy();
-                this.s.close();
-                try {
-                    this.finalize();
-                } catch (Throwable ex) {
-                    Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            Channel video = this.channels.getById(request.getChannelId()); // mover a hilo 1
+            Process bash = Runtime.getRuntime().exec(video.getScript()); // mover a hilo
+
+            /**
+             * Crear y lanzar DOS hilos (y mantener sus referencias). Sus
+             * constructores deberian recibir como unico argumento una
+             * instancia de ClientHandler ("padre" el cual los generó)
+             * 
+             * - Hilo 1: Encargado de iniciar el streaming de video
+             * - Hilo 2: Encargado de mantener el socket activo
+             * 
+             * No puede haber nunca un unico hilo activo, si uno de ellos
+             * finaliza el otro debe hacerlo también. Esto se consigue
+             * utilizando ClientHandler como mediador (utilizando métodos
+             * publicos).
+             * 
+             * Por ejemplo, si el Hilo 2 finaliza porque el socket ha sido
+             * cerrado por el cliente entonces el Hilo 2 deberá notificar esto
+             * a su padre (invocando un método, por ejemplo "onSocketDestroy()"),
+             * a continuación el padre deberá coger la instancia del Hilo 1 e
+             * indicarle que finalice (debera finalizar el streaming y luego
+             * terminar su ejecición)... por ello cada Hilo debería también
+             * definir un método de finalización que será invocado por su padre,
+             * por ejemplo "secureStop()".
+             */
+        } catch (InvalidRequestException ex) {
+            this.out.println(ex);
+        } catch (ChannelNotFoundException ex) {
+            this.out.println(ex);
         } catch (IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            this.out.println(new RequestBaseException(ex));
         }
     }
 }

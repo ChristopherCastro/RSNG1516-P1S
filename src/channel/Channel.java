@@ -1,49 +1,49 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package channel;
 
 public class Channel {
     
-    protected int channelId;
+    protected int id;
     protected String script;
     protected String title;
 
-    public Channel(int channelId, String bash, String title) {
-        this.channelId = channelId;
-        this.script = bash;
+    public Channel(final int getId, final String script, final String title) {
+        this.id = getId;
+        this.script = script;
         this.title = title;
     }
 
-    public int getChannelId() {
-        return channelId;
+    public int getId() {
+        return this.id;
     }
 
-    public void setChannelId(int channelId) {
-        this.channelId = channelId;
+    public void setId(final int id) {
+        this.id = id;
     }
 
     public String getScript() {
-        return script;
+        return this.script;
     }
 
-    public void setScript(String script) {
+    public void setScript(final String script) {
         this.script = script;
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(final String title) {
         this.title = title;
     }
-    
-    public String getChannelAnnounce(){
-        return "PRG " + this.channelId + " " + this.title;
+
+    /**
+     * Generates a string line suitable for UDP announcement multi-casting.
+     *
+     * One UDP announcement may contain multiple lines from different channels.
+     * 
+     * @return 
+     */
+    public String getChannelAnnouncement() {
+        return String.format("PRG %i %s", this.id, this.title);
     }
-    
-    
 }
