@@ -50,6 +50,10 @@ public class ClientHandler implements Runnable {
                 // send: "REQ FAIL mensaje. La lista de canales no existe o esta vacia"
             }else{
                 Channel video = this.channels.getById(request.id);
+                //script += video;  
+                //¿como paso el video por parametro si exec espera un string y video es un channel?
+                //Process bash = Runtime.getRuntime().exec(script);
+                //¿Que hacemos con el atributo "out"?
             }
             
             
