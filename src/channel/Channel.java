@@ -44,6 +44,6 @@ public class Channel {
      * @return 
      */
     public String getChannelAnnouncement() {
-        return String.format("PRG %i %s", this.id, this.title);
+        return String.format("PRG %d %s", this.id, this.title);
     }
 }
