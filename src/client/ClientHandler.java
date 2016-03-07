@@ -2,7 +2,6 @@ package client;
 
 import channel.ChannelCollection;
 import error.InvalidRequestException;
-import error.RequestBaseException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -66,12 +65,13 @@ public class ClientHandler implements Runnable {
             } catch (InvalidRequestException ex) {
                 this.out.println(ex);
             } catch (IOException ex) {
-                this.out.println(new RequestBaseException(ex));
+                Logger.getLogger(SocketInspectorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
         // solo si se realiza una peticion válida
         if (request != null) {
+            System.out.printf("[ClientHandler] New channel requested (%d)\n", request.getChannelId());
             this.socketThread = new SocketInspectorThread(this, this.in);
             this.streamingThread = new StreamingThread(this, request);
 

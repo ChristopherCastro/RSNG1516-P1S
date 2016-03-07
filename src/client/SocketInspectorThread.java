@@ -26,6 +26,8 @@ public class SocketInspectorThread extends Thread {
     @Override
     public void run() {
         String line = null;
+        System.out.println("[SocketInspectorThread] Starting");
+
         try {
             line = this.inputStream.readLine(); // bloqueante
         } catch (Exception ex) {
@@ -35,15 +37,13 @@ public class SocketInspectorThread extends Thread {
                 Logger.getLogger(SocketInspectorThread.class.getName()).log(Level.SEVERE, null, ex);
             }
         } finally {
-            if (this.parent.getSocket().isClosed()) { // null si el socket se cierra de forma inesperada
-                this.parent.onSocketClose();
-            }
+            this.parent.onSocketClose();
         }
     }
 
     void closeSocket() {
         try {
-            System.out.println("[SocketThread]: Socket will be closed now");
+            System.out.println("[SocketInspectorThread]: Socket will be closed now");
             this.parent.getSocket().close();
         } catch (IOException ex) {
             Logger.getLogger(SocketInspectorThread.class.getName()).log(Level.SEVERE, null, ex);

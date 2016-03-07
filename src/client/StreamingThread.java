@@ -25,9 +25,13 @@ public class StreamingThread extends Thread {
 
     @Override
     public void run() {
+        System.out.println("[StreamingThread] Starting");
+
         try {
-            Channel video = this.parent.getChannels().getById(this.request.getChannelId());
-            this.scriptRunning = Runtime.getRuntime().exec(video.getScript());
+            Channel channel = this.parent.getChannels().getById(this.request.getChannelId());
+
+            System.out.printf("[StreamingThread]: Starting streaming of channel %d -> `%s`\n", channel.getId(), channel.streamingCommand(this.request.getClient()));
+            this.scriptRunning = Runtime.getRuntime().exec(channel.streamingCommand(this.request.getClient()));
             this.scriptRunning.waitFor(); // bloqueante
         } catch (ChannelNotFoundException ex) {
             this.parent.getOut().println(ex);
@@ -44,6 +48,10 @@ public class StreamingThread extends Thread {
 
     public void stopStreaming() {
         System.out.println("[StreamingThread]: Streaming will be killed now");
-        this.scriptRunning.destroy();
+        
+        if (this.scriptRunning.isAlive()) {
+            this.scriptRunning.destroy();
+            System.out.println("[StreamingThread]: KILLED");
+        }
     }
 }

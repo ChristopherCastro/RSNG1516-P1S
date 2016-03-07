@@ -1,14 +1,16 @@
 package channel;
 
+import client.Client;
+
 public class Channel {
     
     protected int id;
-    protected String script;
+    protected String videoPath;
     protected String title;
 
     public Channel(final int getId, final String script, final String title) {
         this.id = getId;
-        this.script = script;
+        this.videoPath = script;
         this.title = title;
     }
 
@@ -20,12 +22,12 @@ public class Channel {
         this.id = id;
     }
 
-    public String getScript() {
-        return this.script;
+    public String getVideoPath() {
+        return this.videoPath;
     }
 
-    public void setScript(final String script) {
-        this.script = script;
+    public void setVideoPath(final String script) {
+        this.videoPath = script;
     }
 
     public String getTitle() {
@@ -45,5 +47,28 @@ public class Channel {
      */
     public String getChannelAnnouncement() {
         return String.format("PRG %d %s", this.id, this.title);
+    }
+
+    /**
+     * Prepara el comando de invocación al SO para este canal en particular.
+     * 
+     * Funciona tanto para Windows como Linux.
+     * 
+     * @param channel
+     * @return 
+     */
+    public String streamingCommand(final Client client) {
+        String pattern = "%s %s %s %s";
+        
+        // TODO: change to IPv6
+        String scriptPath = System.getProperty("os.name").toLowerCase().contains("win") ? "./test/scripts/v4/send.bat" : "./test/scripts/v4/send.bash";
+
+        return String.format(
+            pattern,
+            scriptPath,
+            client.getAddress(),
+            client.getReceivePort(),
+            this.getVideoPath()
+        );
     }
 }

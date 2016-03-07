@@ -1,5 +1,6 @@
 package tools;
 
+import java.net.Socket;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -27,8 +28,8 @@ public class IpTools {
      *
      * @param ipAddress A string that is to be examined to verify whether or not
      * it could be a valid IP address.
-     * @return <code>true</code> if the string is a value that is a valid IP
-     * address, <code>false</code> otherwise.
+     * @return true if the string is a value that is a valid IP
+     * address, false otherwise.
      */
     public static boolean isIpAddress(String ipAddress) {
 
@@ -38,5 +39,15 @@ public class IpTools {
         }
         Matcher m2 = IpTools.VALID_IPV6_PATTERN.matcher(ipAddress);
         return m2.matches();
+    }
+
+    /**
+     * Given a socket, gets client's IP address.
+     *
+     * @param socket
+     * @return 
+     */
+    public static String clientAddress(final Socket socket) {
+        return socket.getInetAddress().toString().split("/")[1];
     }
 }
