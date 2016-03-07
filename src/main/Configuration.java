@@ -10,7 +10,7 @@ import channel.*;
 public class Configuration {
     int announceInterval=10; //Intervalo de tiempo en s entre anuncios
     int UDPMaxNumChannels = 5; //Numero de canales a enviar en cada paquete UDP de anunciado multicast (Debe ser >=2)
-    int UDPPacketSize = 1500; //Tamaño en bytes del paquete UDP a enviar con el anunciado de canales
+    int UDPPacketSize = 1250; //Tamaño en bytes del paquete UDP a enviar con el anunciado de canales
 
     
     ChannelCollection channels; //Colección de canales

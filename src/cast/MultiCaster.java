@@ -47,7 +47,7 @@ public class MultiCaster implements Runnable {
             if (paquete.length()+nuevaLinea.length()+"MORE".length() <= maxSize) {//Si cabe en el paquete, lo añado
                 paquete += nuevaLinea;
             }else{ //Si no cabe es que tengo que enviar el paquete acumulado e introducir el canal en uno nuevo
-                paquete += paquete + "MORE";
+                paquete += "MORE";
                 sendDatagram(this.s, paquete);
                 paquete="SSER "+this.config.getServerPort() +"\n"; //TODO: Añadir IP del servidor opcionalmente
                 paquete += nuevaLinea;
