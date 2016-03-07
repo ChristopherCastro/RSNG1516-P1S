@@ -39,6 +39,25 @@ public class MultiCaster implements Runnable {
     
      private void anunciar(){
         int maxSize = this.config.getUDPPacketSize();
+        System.out.println("[MULTICASTER] ¡Anunciando!");
+        String paquete="SSER "+this.config.getServerPort() +"\n"; //TODO: Añadir IP del servidor opcionalmente
+        String nuevaLinea = "";
+        for (Channel canal : this.config.getChannelCollection().getCollection()) { //Voy recorriendo todos los canales disponibles
+            nuevaLinea= canal.getChannelAnnouncement()+"\n";
+            if (paquete.length()+nuevaLinea.length()+"MORE".length() <= maxSize) {//Si cabe en el paquete, lo añado
+                paquete += nuevaLinea;
+            }else{ //Si no cabe es que tengo que enviar el paquete acumulado e introducir el canal en uno nuevo
+                paquete += paquete + "MORE";
+                sendDatagram(this.s, paquete);
+                paquete="SSER "+this.config.getServerPort() +"\n"; //TODO: Añadir IP del servidor opcionalmente
+                paquete += nuevaLinea;
+            }
+        }
+        
+        //Envio el último paquete
+        paquete += "END";
+        sendDatagram(this.s, paquete);
+        
          
      }
     
@@ -89,7 +108,7 @@ public class MultiCaster implements Runnable {
     
     //Enviar por el socket multicast s el string paquete
     private void sendDatagram(MulticastSocket s, String paquete) {
-        System.out.println("[MULTICASTER] Enviado el siguiente paquete: \n" + paquete);
+        System.out.println("[MULTICASTER] Enviado el siguiente paquete:(Size " + paquete.length() + ") \n" + paquete);
         byte[] datagrama_contenido = paquete.getBytes();
         DatagramPacket datagrama = new DatagramPacket(datagrama_contenido,datagrama_contenido.length, this.config.getMcastDir(), this.config.getMcastPort());
         try {

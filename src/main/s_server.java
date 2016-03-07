@@ -10,8 +10,6 @@ import cast.MultiCaster;
 import client.ClientDesk;
 import java.io.File;
 import java.net.InetAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
