@@ -1,8 +1,6 @@
 package client;
 
-import channel.Channel;
 import channel.ChannelCollection;
-import error.ChannelNotFoundException;
 import error.InvalidRequestException;
 import error.RequestBaseException;
 import java.io.BufferedReader;
@@ -12,8 +10,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import threads.SocketThread;
-import threads.StreamingThread;
 
 public class ClientHandler implements Runnable {
 
@@ -21,9 +17,11 @@ public class ClientHandler implements Runnable {
     protected BufferedReader in = null;
     protected PrintWriter out = null;
     protected ChannelCollection channels;
-    protected boolean block = false;
 
-    public ClientHandler(Socket s, ChannelCollection channels) {
+    protected SocketInspectorThread socketThread = null;
+    protected StreamingThread streamingThread = null;
+
+    public ClientHandler(final Socket s, final ChannelCollection channels) {
         try {
             this.socket = s;
             this.in = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -52,60 +50,55 @@ public class ClientHandler implements Runnable {
         return channels;
     }
 
-    public boolean isBlock() {
-        return block;
-    }
-
-    public void setBlock(boolean block) {
-        this.block = block;
-    }
-    
-
     @Override
     public void run() {
-        try {
-            String line = this.in.readLine();
-            RequestMessage request = new RequestMessage(this.socket, line);
+        RequestMessage request = null;
+        String line = null;
 
-            /**
-             * Crear y lanzar DOS hilos (y mantener sus referencias). Sus
-             * constructores deberian recibir como unico argumento una instancia
-             * de ClientHandler ("padre" el cual los generó)
-             *
-             * - Hilo 1: Encargado de iniciar el streaming de video - - Hilo 2:
-             * Encargado de mantener el socket activo
-             *
-             * No puede haber nunca un unico hilo activo, si uno de ellos
-             * finaliza el otro debe hacerlo también. Esto se consigue
-             * utilizando ClientHandler como mediador (utilizando métodos
-             * publicos).
-             *
-             * Por ejemplo, si el Hilo 2 finaliza porque el socket ha sido
-             * cerrado por el cliente entonces el Hilo 2 deberá notificar esto a
-             * su padre (invocando un método, por ejemplo "onSocketDestroy()"),
-             * a continuación el padre deberá coger la instancia del Hilo 1 e
-             * indicarle que finalice (debera finalizar el streaming y luego
-             * terminar su ejecición)... por ello cada Hilo debería también
-             * definir un método de finalización que será invocado por su padre,
-             * por ejemplo "secureStop()".
-             */
-            
-            SocketThread socketAlive = new SocketThread(this);
-            StreamingThread streaming = new StreamingThread(this,request);
-            
-            socketAlive.start();
-            streaming.start();
-            
-            socketAlive.join();
-            streaming.join();
-            
+        while (request == null) {
+            try {
+                line = this.in.readLine();
+                
+                // por si se cierra el socket de forma inesperada
+                if (line != null) {
+                    request = new RequestMessage(this.socket, line);
+                }
+            } catch (InvalidRequestException ex) {
+                this.out.println(ex);
+            } catch (IOException ex) {
+                this.out.println(new RequestBaseException(ex));
+            }
+        }
+        
+        // solo si se realiza una peticion válida
+        if (request != null) {
+            this.socketThread = new SocketInspectorThread(this, this.in);
+            this.streamingThread = new StreamingThread(this, request);
 
-        } catch (InvalidRequestException ex) {
-            this.out.println(ex);
-        } catch (IOException ex) {
-            this.out.println(new RequestBaseException(ex));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            this.socketThread.start();
+            this.streamingThread.start();
+        }
+    }
+
+    /**
+     * Callback, invocado por el hilo `SocketInspectorThread` para indicar que
+     * ha cerrado el socket por parte del cliente.
+     */
+    public void onSocketClose()
+    {
+        if (this.streamingThread.isAlive()) {
+            this.streamingThread.stopStreaming();
+        }
+    }
+
+    /**
+     * Callback utilizado por el hilo `StreamingThread` para indicar que ha
+     * terminado el flujo de video entre servidor y cliente.
+     */
+    public void onStreamingFinish()
+    {
+        if (this.socketThread.isAlive()) {
+            this.socketThread.closeSocket();
         }
     }
 }

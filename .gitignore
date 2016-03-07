@@ -1,4 +1,5 @@
-nbproject/private/
+# private directories
+nbproject/private/*
 build/
 nbbuild/
 dist/
@@ -6,4 +7,7 @@ nbdist/
 nbactions.xml
 .nb-gradle/
 
-RSNG1516-P1S/nbproject/private/private.properties
+# except
+# testing builds
+!nbproject/private/configs/
+!nbproject/private/config*
