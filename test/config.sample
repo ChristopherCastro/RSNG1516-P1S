@@ -1,9 +1,9 @@
-1	script1	Canal de video 1
-2	script2	Los 2 samurais
-3	script3	Los 3 mosqueteros
-4	script4	4 bodas para 3 hermanos
-7	script7	Casino 777
-8	script8	Los odiosos 8
-11	script11	Las 11 cabras del averno
-12	script12	Doce monos
-13	script13	Trece rosas
+1	./test/videos/video1.mp4	Canal de video 1
+2	./test/videos/video2.mp4	Los 2 samurais
+3	./test/videos/video3.mp4	Los 3 mosqueteros
+4	./test/videos/video4.mp4	4 bodas para 3 hermanos
+7	./test/videos/video7.mp4	Casino 777
+8	./test/videos/video8.mp4	Los odiosos 8
+11	./test/videos/video11.mp4	Las 11 cabras del averno
+12	./test/videos/video12.mp4	Doce monos
+13	./test/videos/video13.mp4	Trece rosas
