@@ -2,8 +2,6 @@ package client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,16 +26,18 @@ public class SocketInspectorThread extends Thread {
         String line = null;
         System.out.println("[SocketInspectorThread] Starting");
 
-        try {
-            line = this.inputStream.readLine(); // bloqueante
-        } catch (Exception ex) {
-            // mostrar error solo si el socket sigue abierto, sino significa
-            // que ha sido cerrado a la fuerza (caso controlado)
-            if (!this.parent.getSocket().isClosed()) {
-                Logger.getLogger(SocketInspectorThread.class.getName()).log(Level.SEVERE, null, ex);
+        while (true) {
+            try {
+                line = this.inputStream.readLine(); // bloqueante
+            } catch (IOException ex) {
+                line = null;
             }
-        } finally {
-            this.parent.onSocketClose();
+
+            if (line == null) {
+                System.out.println("[SocketInspectorThread] Client has closed the connection");
+                this.parent.onSocketClose();
+                break;
+            }
         }
     }
 

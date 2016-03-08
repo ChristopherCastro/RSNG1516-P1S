@@ -2,32 +2,52 @@ package main;
 
 import java.net.InetAddress;
 import channel.*;
+import java.io.File;
+import java.io.IOException;
+import org.ini4j.Ini;
 
 /**
  *
  * Esta clase embebe toda la configuración del servidor 
  */
 public class Configuration {
-    protected int announceInterval = 10; //Intervalo de tiempo en s entre anuncios
-    protected int UDPMaxNumChannels = 5; //Numero de canales a enviar en cada paquete UDP de anunciado multicast (Debe ser >=2)
-    protected int UDPPacketSize = 1250; //Tamaño en bytes del paquete UDP a enviar con el anunciado de canales
-    protected ChannelCollection channels; //Colección de canales
-    protected int serverPort; // Puerto en el que escucha el servidor
-    protected InetAddress mcastAddress; //Dirección a la que realizar los anuncios multicast
-    protected int mcastPort; //Puerto al que realizar los anuncios multicast
+    protected InetAddress mcastAddress;
+    protected int mcastPort;
+    protected int announceInterval = 10;
+    protected int UDPMaxNumChannels = 5;
+    protected int UDPPacketSize = 1250;
 
-    public Configuration(
-        final String channelsFilePath,
-        final InetAddress mcastAddress,
-        final int serverPort,
-        final int mcastPort
-    ) {
-        this.channels = new ChannelCollection(channelsFilePath);
-        this.mcastAddress = mcastAddress;
-        this.serverPort = serverPort;
-        this.mcastPort = mcastPort;
+    protected String channelsPath;
+    protected ChannelCollection channels;
+    protected int serverPort;
+    protected String scriptsPath;
+
+    /**
+     * - server.channels: fichero de programas a servir
+     * - server.port: puerto en el que el servidor escuchará peticiones de clientes
+     * - cast.addr: dirección a la que el servidor enviará los anuncios
+     * - cast.port: puerto al que el servidor enviará los anuncios
+     * 
+     * @param configPath Ruta el fichero INI
+     */
+    public Configuration(final String configPath) throws IOException {
+        Ini ini = new Ini(new File(configPath));
+
+        // server stuff
+        this.serverPort = ini.get("server", "port", int.class);
+        this.scriptsPath = ini.get("server", "scripts_path", String.class);
+        this.channelsPath = ini.get("server", "channels", String.class);
+        this.channels = new ChannelCollection(this.channelsPath, this.scriptsPath);
+
+        // mCaster stuff
+        this.mcastAddress = InetAddress.getByName(ini.get("mcast", "addr", String.class));
+        this.mcastPort = ini.get("mcast", "port", int.class);
+        this.announceInterval = ini.get("mcast", "internval", int.class);
+        this.UDPMaxNumChannels = ini.get("mcast", "udp_channels", int.class);
+        this.UDPPacketSize = ini.get("mcast", "udp_size", int.class);
 
         System.out.println("[Configuration] Configuración del server completada con éxito");
+        System.out.println(this);
     }
 
     public int getServerPort() {
@@ -56,5 +76,21 @@ public class Configuration {
 
     public int getUDPPacketSize() {
         return UDPPacketSize;
+    }
+    
+    @Override
+    public String toString() {
+        String out = "[CONFIGURATION]\n";
+        out += String.format(" - %s: %d\n", "server.port", this.serverPort);
+        out += String.format(" - %s: %s\n", "server.scripts_path", this.scriptsPath);
+        out += String.format(" - %s: %s\n", "server.channels", this.channelsPath);
+        
+        out += String.format(" - %s: %s\n", "mcast.addr", this.mcastAddress.toString());
+        out += String.format(" - %s: %d\n", "mcast.port", this.mcastPort);
+        out += String.format(" - %s: %d\n", "mcast.interval", this.announceInterval);
+        out += String.format(" - %s: %d\n", "mcast.udp_channels", this.UDPMaxNumChannels);
+        out += String.format(" - %s: %d\n", "mcast.udp_size", this.UDPPacketSize);
+
+        return out;
     }
 }

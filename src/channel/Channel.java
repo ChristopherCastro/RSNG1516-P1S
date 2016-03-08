@@ -1,16 +1,34 @@
 package channel;
 
 import client.Client;
+import java.io.File;
 
 public class Channel {
-    
-    protected int id;
-    protected String videoPath;
-    protected String title;
 
-    public Channel(final int getId, final String script, final String title) {
+    /**
+     * Identificador de canal
+     */
+    protected int id;
+    
+    /**
+     * Ruta el fichero de video
+     */
+    protected String videoPath;
+    
+    /**
+     * Título descriptivo del video
+     */
+    protected String title;
+    
+    /**
+     * Ruta el directorio que contiene los scripts de streaming
+     */
+    protected String scriptsPath;
+
+    public Channel(final String scriptsPath, final int getId, final String path, final String title) {
+        this.scriptsPath = scriptsPath;
         this.id = getId;
-        this.videoPath = script;
+        this.videoPath = path;
         this.title = title;
     }
 
@@ -39,7 +57,7 @@ public class Channel {
     }
 
     /**
-     * Generates a string line suitable for UDP announcement multi-casting.
+     * Generates a string line suitable for UDP multi-casting announcement.
      *
      * One UDP announcement may contain multiple lines from different channels.
      * 
@@ -54,18 +72,17 @@ public class Channel {
      * 
      * Funciona tanto para Windows como Linux.
      * 
-     * @param channel
+     * @param client Cliente para el cual preparar el comando
      * @return 
      */
     public String streamingCommand(final Client client) {
         String pattern = "%s %s %s %s";
-        
-        // TODO: change to IPv6
-        String scriptPath = System.getProperty("os.name").toLowerCase().contains("win") ? "./test/scripts/v4/send.bat" : "./test/scripts/v4/send.bash";
+        String base = System.getProperty("os.name").toLowerCase().contains("win") ? "/send.bat" : "/send.bash";
+        File scriptFile = new File(this.scriptsPath + base);
 
         return String.format(
             pattern,
-            scriptPath,
+            scriptFile.getAbsolutePath(),
             client.getAddress(),
             client.getReceivePort(),
             this.getVideoPath()

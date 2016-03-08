@@ -14,9 +14,11 @@ public class ChannelCollection {
 
     protected ArrayList<Channel> collection;
     protected String pathFile;
+    protected String scriptsPath;
 
-    public ChannelCollection(String pathFile)  {
+    public ChannelCollection(final String pathFile, final String scriptsPath)  {
         this.collection = new ArrayList();
+        this.scriptsPath = scriptsPath;
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(pathFile));
@@ -26,6 +28,7 @@ public class ChannelCollection {
                 try {
                     String[] parameter = line.split("\t");
                     Channel channel = new Channel(
+                        scriptsPath,
                         Integer.parseInt(parameter[0]),
                         parameter[1],
                         parameter[2]

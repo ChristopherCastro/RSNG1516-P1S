@@ -50,7 +50,7 @@ public class StreamingThread extends Thread {
         System.out.println("[StreamingThread]: Streaming will be killed now");
         
         if (this.scriptRunning.isAlive()) {
-            this.scriptRunning.destroy();
+            this.scriptRunning.destroyForcibly();
             System.out.println("[StreamingThread]: KILLED");
         }
     }

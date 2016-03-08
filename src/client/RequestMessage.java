@@ -9,7 +9,7 @@ public class RequestMessage {
     protected Client client;
 
     public RequestMessage(final Socket socket, final String command) throws InvalidRequestException {
-        if (!command.startsWith("REQ")) {
+        if (!command.startsWith("REQ ")) {
             throw new InvalidRequestException("Petición inválida: " + command);
         }
 
