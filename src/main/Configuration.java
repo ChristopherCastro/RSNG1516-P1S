@@ -14,7 +14,6 @@ public class Configuration {
     protected InetAddress mcastAddress;
     protected int mcastPort;
     protected int announceInterval = 10;
-    protected int UDPMaxNumChannels = 5;
     protected int UDPPacketSize = 1250;
 
     protected String channelsPath;
@@ -43,7 +42,6 @@ public class Configuration {
         this.mcastAddress = InetAddress.getByName(ini.get("mcast", "addr", String.class));
         this.mcastPort = ini.get("mcast", "port", int.class);
         this.announceInterval = ini.get("mcast", "internval", int.class);
-        this.UDPMaxNumChannels = ini.get("mcast", "udp_channels", int.class);
         this.UDPPacketSize = ini.get("mcast", "udp_size", int.class);
 
         System.out.println("[Configuration] Configuración del server completada con éxito");
@@ -68,10 +66,6 @@ public class Configuration {
 
     public int getAnnounceInterval() {
         return announceInterval;
-    }
-
-    public int getUDPMaxNumChannels() {
-        return UDPMaxNumChannels;
     }
 
     public int getUDPPacketSize() {
