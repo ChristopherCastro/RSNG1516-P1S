@@ -5,13 +5,8 @@
  */
 package main;
 
-import tools.IpTools;
 import cast.MultiCaster;
 import client.ClientDesk;
-import java.io.File;
-import java.net.InetAddress;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
 
 /**
  * Clase primigénea. Se encarga de validar los argumentos y lanzar 2 hilos. Uno
@@ -29,19 +24,17 @@ public class s_server {
      * Modo de uso:
      * 
      * ```
-     * ~$ s_server -c config_file
+     * ~$ s_server [config_file]
      * ```
      * 
      * En donde:
      * 
-     * - config_file: Ruta al fichero de configuración para esta instancia de server
+     * - [config_file]: Ruta al fichero de configuración para esta instancia de server
      *
      * @param args
      */
     public static void main(String[] args) throws Exception {
-        OptionParser parser = new OptionParser("c:");
-        OptionSet options = parser.parse(args);
-        s_server.config = new Configuration((String)options.valueOf("c"));
+        s_server.config = new Configuration(args[1]);
 
         MultiCaster multicaster = new MultiCaster(s_server.config);
         new Thread(multicaster).start();
