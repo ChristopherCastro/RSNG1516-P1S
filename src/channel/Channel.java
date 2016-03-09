@@ -76,7 +76,7 @@ public class Channel {
      * @return 
      */
     public String streamingCommand(final Client client) {
-        String pattern = System.getProperty("os.name").toLowerCase().contains("win") ? "bash %s %s %s %s" : "%s %s %s %s";
+        String pattern = System.getProperty("os.name").toLowerCase().contains("win") ? "%s %s %s %s" : "bash %s %s %s %s";
         String base = System.getProperty("os.name").toLowerCase().contains("win") ? "/send.bat" : "/send.bash";
         File scriptFile = new File(this.scriptsPath + base);
 
