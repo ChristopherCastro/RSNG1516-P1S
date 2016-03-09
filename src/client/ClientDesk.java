@@ -1,6 +1,8 @@
 package client;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,9 +24,19 @@ public class ClientDesk implements Runnable {
     @Override
     public void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(config.getServerPort());
+            ServerSocket serverSocket = new ServerSocket();
+            serverSocket.bind(
+                new InetSocketAddress(
+                    InetAddress.getByName("::"),
+                    config.getServerPort()
+                )
+            );
+            
+            // WAIT FOR CLIENTS
+            System.out.println("[ClientDesk] Waiting for clients");
             while (true) {
                 new ClientHandler(serverSocket.accept(), this.config.getChannelCollection());
+                System.out.println("[ClientDesk] New client connected");
             }
         } catch (IOException ex) {
             Logger.getLogger(ClientDesk.class.getName()).log(Level.SEVERE, null, ex);

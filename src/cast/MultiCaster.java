@@ -36,7 +36,6 @@ public class MultiCaster implements Runnable {
         }
     }
 
-    
      private void anunciar(){
         int maxSize = this.config.getUDPPacketSize();
         System.out.println("[MULTICASTER] ¡Anunciando!");
