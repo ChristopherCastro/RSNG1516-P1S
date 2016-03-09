@@ -32,9 +32,10 @@ public class s_server {
      * - [config_file]: Ruta al fichero de configuración para esta instancia de server
      *
      * @param args
+     * @throws java.lang.Exception
      */
     public static void main(String[] args) throws Exception {
-        s_server.config = new Configuration(args[1]);
+        s_server.config = new Configuration(args[0]);
 
         MultiCaster multicaster = new MultiCaster(s_server.config);
         new Thread(multicaster).start();
