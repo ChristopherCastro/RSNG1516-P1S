@@ -3,6 +3,7 @@ package cast;
 import channel.Channel;
 import java.io.IOException;
 import java.net.DatagramPacket;
+import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -20,7 +21,8 @@ public class MultiCaster implements Runnable {
     public MultiCaster(Configuration config) throws UnknownHostException, IOException {
         this.config = config;
         this.s = new MulticastSocket(this.config.getMcastPort());
-        System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast a %s:%s ...\n", this.config.getMcastDir(), this.config.getMcastPort());
+        this.s.setInterface(InetAddress.getByName("2001:720:1d10:fff4:800:27ff:fe00:0"));
+        System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast con origen %s a %s:%s ...\n",this.s.getInterface() ,this.config.getMcastDir(), this.config.getMcastPort());
     }
 
     @Override
