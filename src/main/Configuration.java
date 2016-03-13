@@ -86,6 +86,7 @@ public class Configuration {
         out += String.format(" - %s: %s\n", "server.channels", this.channelsPath);
 
         out += String.format(" - %s: %s\n", "mcast.addr", this.mcastAddress.toString());
+        out += String.format(" - %s: %s\n", "mcast.iface", this.mcastIfaceAddr);
         out += String.format(" - %s: %d\n", "mcast.port", this.mcastPort);
         out += String.format(" - %s: %d\n", "mcast.interval", this.announceInterval);
         out += String.format(" - %s: %d\n", "mcast.udp_size", this.UDPPacketSize);
