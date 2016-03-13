@@ -8,11 +8,12 @@ import org.ini4j.Ini;
 
 /**
  *
- * Esta clase embebe toda la configuración del servidor 
+ * Esta clase embebe toda la configuración del servidor
  */
 public class Configuration {
     protected InetAddress mcastAddress;
     protected int mcastPort;
+    protected String mcastIfaceAddr;
     protected int announceInterval = 10;
     protected int UDPPacketSize = 1250;
 
@@ -26,7 +27,7 @@ public class Configuration {
      * - server.port: puerto en el que el servidor escuchará peticiones de clientes
      * - cast.addr: dirección a la que el servidor enviará los anuncios
      * - cast.port: puerto al que el servidor enviará los anuncios
-     * 
+     *
      * @param configPath Ruta el fichero INI
      */
     public Configuration(final String configPath) throws IOException {
@@ -43,6 +44,7 @@ public class Configuration {
         this.mcastPort = ini.get("mcast", "port", int.class);
         this.announceInterval = ini.get("mcast", "internval", int.class);
         this.UDPPacketSize = ini.get("mcast", "udp_size", int.class);
+        this.mcastIfaceAddr = ini.get("mcast", "iface", String.class);
 
         System.out.println("[Configuration] Configuración del server completada con éxito");
         System.out.println(this);
@@ -51,15 +53,19 @@ public class Configuration {
     public int getServerPort() {
         return this.serverPort;
     }
-    
+
     public InetAddress getMcastDir() {
         return this.mcastAddress;
     }
-    
+
+    public String getMcastIfaceAddr() {
+        return this.mcastIfaceAddr;
+    }
+
     public int getMcastPort(){
         return this.mcastPort;
     }
-    
+
     public ChannelCollection getChannelCollection(){
         return this.channels;
     }
@@ -71,14 +77,14 @@ public class Configuration {
     public int getUDPPacketSize() {
         return UDPPacketSize;
     }
-    
+
     @Override
     public String toString() {
         String out = "[CONFIGURATION]\n";
         out += String.format(" - %s: %d\n", "server.port", this.serverPort);
         out += String.format(" - %s: %s\n", "server.scripts_path", this.scriptsPath);
         out += String.format(" - %s: %s\n", "server.channels", this.channelsPath);
-        
+
         out += String.format(" - %s: %s\n", "mcast.addr", this.mcastAddress.toString());
         out += String.format(" - %s: %d\n", "mcast.port", this.mcastPort);
         out += String.format(" - %s: %d\n", "mcast.interval", this.announceInterval);

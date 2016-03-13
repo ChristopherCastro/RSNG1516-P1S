@@ -18,10 +18,10 @@ public class MultiCaster implements Runnable {
     MulticastSocket s; //Socket encargado de enviar los anuncios multicast
     Configuration config;
 
-    public MultiCaster(Configuration config) throws UnknownHostException, IOException {
+    public MultiCaster(final Configuration config) throws UnknownHostException, IOException {
         this.config = config;
         this.s = new MulticastSocket(this.config.getMcastPort());
-        this.s.setInterface(InetAddress.getByName("2001:720:1d10:fff4:800:27ff:fe00:0"));
+        this.s.setInterface(InetAddress.getByName(this.config.getMcastIfaceAddr()));
         System.out.printf("[MULTICASTER] Iniciando servicio de anunciado multicast con origen %s a %s:%s ...\n",this.s.getInterface() ,this.config.getMcastDir(), this.config.getMcastPort());
     }
 
