@@ -76,6 +76,7 @@ public class ClientHandler implements Runnable {
             this.streamingThread = new StreamingThread(this, request);
 
             this.socketThread.start();
+            this.out.println("REQ OK");
             this.streamingThread.start();
         }
     }
